@@ -8,14 +8,39 @@
 <tr><td rowspan="1" colspan="3">SiteMap</td></tr>
 </thead>
 <tbody>
+	<tr>
+	<td>SITE_MAP_PORTLET_DISPLAY</td>
+	<td>//div[contains(@id,'SiteMapPortlet')]</td>
+	<td></td>
+</tr>
 <tr>
 	<td>SITE_MAP_PAGE_DISPLAY</td>
 	<td>//div[contains(@id,'main-content')]//div[contains(@class,'portlet-content')]//a[contains(.,'${pageName}')]</td>
 	<td></td>
 </tr>
 <tr>
+	<td>SITE_MAP_LINK_DISPLAY</td>
+	<td>//div[contains(@id,'SiteMapPortlet')]//a[contains(.,'Asun public page 1')])</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SITE_MAP_CHILD_PAGE_DISPLAY</td>
 	<td>//div[contains(@id,'main-content')]//div[contains(@class,'portlet-content')]//ul/li/a[contains(.,'${childPageName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SITE_MAP_CHILD_PAGE1_DISPLAY</td>
+	<td>//div[contains(@i, 'SiteMapPortlet'//a[contains(., 'Asun public page 1'//a[contains@.,'Asun Children Page 1')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SITE_MAP_CHILD_PAGE2_DISPLAY</td>
+	<td>//div[contains(@i, 'SiteMapPortlet'//a[contains(., 'Asun public page 1'//a[contains@.,'Asun Children Page 2')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SITE_MAP_CHILD_PAGE3_DISPLAY</td>
+	<td>//div[contains(@i, 'SiteMapPortlet'//a[contains(., 'Asun public page 1'//a[contains@.,'Asun Children Page 3')]</td>
 	<td></td>
 </tr>
 <tr>

@@ -1,0 +1,90 @@
+<definition component-name="portal-Sitemap">
+	<property name="testray.main.component.name" value="Site Map" />
+
+	<set-up>
+		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
+		<if>
+			<equals arg1="${testPortalInstance}" arg2="true" />
+			<then>
+				<execute macro="SignIn#signInPortalInstanceSetUp" />
+			</then>
+		</if>
+		<execute macro="User#firstLoginPG" />
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Sites" />
+		</execute>
+
+		<execute macro="Site#addBlankCP">
+			<var name="siteName" value="Test Site" />
+		</execute>
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Sites" />
+		</execute>
+
+		<execute macro="SitePage#addCP">
+			<var name="page" value="Public Pages" />
+			<var name="siteName" value="Test Site" />
+			<var name="sitePageName" value="Test Page" />
+			
+			<execute macro="SitePage#addChildCP">
+			<var name="page" value="Public Pages" />
+			<var name="siteChildPageName" value="Test Child Page"/>
+			<var name="siteName" value="Site Name" />
+			<var name="sitePageName" value="Test Page" />
+		</execute>
+	<set-up />
+
+		<tear-down>
+		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
+
+		<if>
+			<equals arg1="${testPortalInstance}" arg2="true" />
+			<then>
+				<execute macro="PortalInstances#tearDownCP" />
+			</then>
+			<else>
+				<execute macro="Site#tearDownCP" />
+			</else>
+		</if>
+		<tear-down>
+
+		<command name="DisplayPublicPagesWChildrenPagesasAdm" >
+			<execute macro="Portlet#addPG" />
+				<var name="portlet" value="Site Map"/>
+            </execute>
+			<for i="Site Map,Test Page" param="iteration">
+				<execute macro= "Portlet#viewTitle">
+				<var name="portletName" value= "${iteration}"/>
+			</execute>
+				<execute function="AssertElementPresent" locator1="SiteMap#SITE_MAP_LINK_DISPLAY" />
+
+			<if>
+			<and>
+				<condition function="IsElementPresent" locator1="SiteMap#SITE_MAP_LINK_DISPLAY" />
+				<condition function="IsVisible" locator1="SiteMap#SITE_MAP_LINK_DISPLAY" />
+			</and>
+			<then>
+				<execute function="Click" locator1="SiteMap#SITE_MAP_LINK_DISPLAY" />
+			</then>
+		</if>
+		</for>
+
+			<var name="Test Child Page" name="Test Child Page"/>
+			<execute macro="Portlet#viewTitle">
+				<var name="Test Child Page" value="${Test Child Page}"/>
+			</execute>
+				<var name="localization" value="${localization}" />
+			<execute function= "AssertElementPresent" locator1="${localization}" />
+
+			<if>
+			<and>
+				<condition function="IsElementPresent" locator1="SiteMap#SITE_MAP_LINK_DISPLAY" />
+				<condition function="IsVisible" locator1="SiteMap#SITE_MAP_LINK_DISPLAY" />
+			</and>
+			<then>
+				<execute function="Click" locator1="SiteMap#SITE_MAP_LINK_DISPLAY" />
+			</then>
+		</if>
+		</command>
