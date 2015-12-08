@@ -51,7 +51,7 @@
 		<tear-down>
 
 		<command name="DisplayPublicPagesWChildrenPagesasAdm" >
-			<execute macro="Portlet#addPG" />
+			<execute macro="Portlet#addPG">
 				<var name="portlet" value="Site Map"/>
             </execute>
 			<for i="Site Map,Test Page" param="iteration">
