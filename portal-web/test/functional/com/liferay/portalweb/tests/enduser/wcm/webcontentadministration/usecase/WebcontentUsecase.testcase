@@ -4,14 +4,7 @@
 	<var name="globalSiteName" value="Global" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 	</set-up>
@@ -481,7 +474,9 @@
 			<var name="siteScopeSelected" value="true" />
 		</execute>
 
-		<execute macro="Navigator#openURL" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Test Site Name" />
+		</execute>
 
 		<execute macro="ProductMenu#gotoSitesContent">
 			<var name="portlet" value="Web Content" />
@@ -565,7 +560,9 @@
 			<var name="siteScopeSelected" value="true" />
 		</execute>
 
-		<execute macro="Navigator#openURL" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Test Site Name" />
+		</execute>
 
 		<execute macro="ProductMenu#gotoSitesContent">
 			<var name="portlet" value="Web Content" />
@@ -1991,6 +1988,7 @@
 			<var name="localizedText" value="WC contenu WebContent" />
 			<var name="localizedTitle" value="WC WebContent Titre" />
 			<var name="lowercaseLanguageCode" value="fr" />
+			<var name="panelHeading" value="Structure et modèle" />
 			<var name="structureLocalizationName" value="nom de la structure de wc" />
 			<var name="templateLocalizationName" value="nom de la template de wc" />
 			<var name="webContentTranslationLanguage" value="français (France)" />
@@ -2011,6 +2009,7 @@
 		<execute macro="WebContentNavigator#gotoEditPGViaWCD" />
 
 		<execute macro="WebContent#viewTranslationPGViaWCD">
+			<var name="panelHeading" value="结构和模板" />
 			<var name="structureLocalizationName" value="wc 结构名称" />
 			<var name="templateLocalizationName" value="wc 模板名称" />
 		</execute>

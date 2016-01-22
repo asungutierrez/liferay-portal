@@ -671,6 +671,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		newContent = fixMissingEmptyLines(newContent);
 
+		newContent = fixRedundantEmptyLines(newContent);
+
 		while (true) {
 			Matcher matcher = _incorrectLineBreakPattern1.matcher(newContent);
 
@@ -1245,6 +1247,24 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		return content;
 	}
 
+	protected String fixRedundantEmptyLines(String content) {
+		Matcher matcher = _redundantEmptyLines1.matcher(content);
+
+		if (matcher.find()) {
+			return StringUtil.replaceFirst(
+				content, "\n", StringPool.BLANK, matcher.start());
+		}
+
+		matcher = _redundantEmptyLines2.matcher(content);
+
+		if (matcher.find()) {
+			return StringUtil.replaceFirst(
+				content, "\n", StringPool.BLANK, matcher.end() - 1);
+		}
+
+		return content;
+	}
+
 	protected String fixSystemExceptions(String content) {
 		if (!content.contains("SystemException")) {
 			return content;
@@ -1706,6 +1726,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 				checkEmptyCollection(trimmedLine, fileName, lineCount);
 
+				line = formatEmptyArray(line);
+
 				// LPS-58529
 
 				checkResourceUtil(line, fileName, lineCount);
@@ -2039,17 +2061,10 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 							"line break: " + fileName + " " + lineCount);
 					}
 
-					if (trimmedLine.startsWith(StringPool.CLOSE_CURLY_BRACE) &&
-						line.endsWith(StringPool.OPEN_CURLY_BRACE)) {
-
-						Matcher matcher = _lineBreakPattern.matcher(
-							trimmedLine);
-
-						if (!matcher.find()) {
-							processErrorMessage(
-								fileName,
-								"line break: " + fileName + " " + lineCount);
-						}
+					if (trimmedLine.matches("^\\} (catch|else|finally) .*")) {
+						processErrorMessage(
+							fileName,
+							"line break: " + fileName + " " + lineCount);
 					}
 				}
 
@@ -3313,15 +3328,17 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		List<String> fileNames = new ArrayList<>();
 
-		String moduleRootDirLocation =
-			sourceFormatterArgs.getBaseDirName() + "modules/";
+		String moduleRootDirLocation = "modules/";
 
 		for (int i = 0; i < 6; i++) {
-			File file = new File(moduleRootDirLocation);
+			File file = new File(
+				sourceFormatterArgs.getBaseDirName() + moduleRootDirLocation);
 
 			if (file.exists()) {
 				fileNames = getFileNames(
-					moduleRootDirLocation, null, new String[0], getIncludes());
+					sourceFormatterArgs.getBaseDirName() +
+						moduleRootDirLocation,
+					null, new String[0], getIncludes());
 
 				break;
 			}
@@ -3858,7 +3875,6 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 	};
 	private List<String> _javaTermAccessLevelModifierExclusionFiles;
 	private List<String> _javaTermSortExclusionFiles;
-	private Pattern _lineBreakPattern = Pattern.compile("\\}(\\)+) \\{");
 	private List<String> _lineLengthExclusionFiles;
 	private Pattern _logLevelPattern = Pattern.compile(
 		"\n(\t+)_log.(debug|info|trace|warn)\\(");
@@ -3875,6 +3891,10 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		"implements ProcessCallable\\b");
 	private List<String> _proxyExclusionFiles;
 	private Pattern _redundantCommaPattern = Pattern.compile(",\n\t+\\}");
+	private Pattern _redundantEmptyLines1 = Pattern.compile(
+		"\n\npublic ((abstract|static) )*(class|enum|interface) ");
+	private Pattern _redundantEmptyLines2 = Pattern.compile(
+		" \\* @author .*\n \\*\\/\n\n");
 	private Pattern _referenceMethodContentPattern = Pattern.compile(
 		"^(\\w+) =\\s+\\w+;$");
 	private Pattern _referenceMethodPattern = Pattern.compile(

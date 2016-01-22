@@ -6,14 +6,7 @@
 	<var name="portletName" value="Calendar" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 
@@ -1034,6 +1027,8 @@
 	</command>
 
 	<command name="AddEventRepeatingMonthly2Times" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<var name="eventTitle" value="Calendar Event Repeating Title" />
 		<var name="eventType" value="Repeating" />
 
@@ -3411,6 +3406,42 @@
 		</execute>
 	</command>
 
+	<command name="EditLanguageSelectorAndViewEvent" priority="3">
+		<description message="This is a use case for LPS-58649." />
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName}" />
+		</execute>
+
+		<execute macro="Portlet#addPG">
+			<var name="pageName" value="${pageName}" />
+			<var name="portletName" value="Language" />
+		</execute>
+
+		<execute macro="LanguagePortlet#selectLanguagePG">
+			<var name="language" value="Spanish (Spain)" />
+		</execute>
+
+		<execute macro="CalendarScheduler#addLocalizedEvent">
+			<var name="eventTitle" value="Calendar Event Title" />
+			<var name="saveButton" value="Guardar" />
+			<var name="viewType" value="Week" />
+		</execute>
+
+		<execute macro="CalendarScheduler#viewLocalizedEvent">
+			<var name="eventTitle" value="Calendar Event Title" />
+			<var name="viewTypeLocalized" value="Semana" />
+		</execute>
+
+		<execute macro="LanguagePortlet#selectLanguagePG">
+			<var name="language" value="English (United States)" />
+		</execute>
+
+		<execute macro="CalendarScheduler#viewDay">
+			<var name="eventTitle" value="Calendar Event Title" />
+		</execute>
+	</command>
+
 	<command name="EditReminderEmailTemplateForCalendarResourceCalendar" priority="3">
 		<var name="calendarResourceName" value="Calendar Resource Name" />
 		<var name="calendarType" value="Other Calendars" />
@@ -3827,52 +3858,44 @@
 		</execute>
 
 		<execute macro="User#addCP">
-			<var name="userEmailAddress" value="userea1@liferay.com" />
+			<var name="userEmailAddress" value="usersn1@liferay.com" />
 			<var name="userFirstName" value="userfn1" />
 			<var name="userLastName" value="userln1" />
 			<var name="userScreenName" value="usersn1" />
 		</execute>
 
+		<execute macro="ProductMenu#gotoControlPanelUsers">
+			<var name="portlet" value="Users and Organizations" />
+		</execute>
+
 		<execute macro="User#addCP">
-			<var name="userEmailAddress" value="userea2@liferay.com" />
+			<var name="userEmailAddress" value="usersn2@liferay.com" />
 			<var name="userFirstName" value="userfn2" />
 			<var name="userLastName" value="userln2" />
 			<var name="userScreenName" value="usersn2" />
 		</execute>
 
+		<execute macro="ProductMenu#gotoControlPanelUsers">
+			<var name="portlet" value="Users and Organizations" />
+		</execute>
+
 		<execute macro="User#addCP">
-			<var name="userEmailAddress" value="userea3@liferay.com" />
+			<var name="userEmailAddress" value="usersn3@liferay.com" />
 			<var name="userFirstName" value="userfn3" />
 			<var name="userLastName" value="userln3" />
 			<var name="userScreenName" value="usersn3" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoControlPanelUsers">
-			<var name="portlet" value="Users and Organizations" />
-		</execute>
+		<for list="usersn1,usersn2,usersn3" param="userScreenName">
+			<execute macro="ProductMenu#gotoControlPanelUsers">
+				<var name="portlet" value="Users and Organizations" />
+			</execute>
 
-		<execute macro="User#editPasswordCP">
-			<var name="userEmailAddress" value="userea1@liferay.com" />
-			<var name="userScreenName" value="usersn1" />
-		</execute>
-
-		<execute macro="ProductMenu#gotoControlPanelUsers">
-			<var name="portlet" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="User#editPasswordCP">
-			<var name="userEmailAddress" value="userea2@liferay.com" />
-			<var name="userScreenName" value="usersn2" />
-		</execute>
-
-		<execute macro="ProductMenu#gotoControlPanelUsers">
-			<var name="portlet" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="User#editPasswordCP">
-			<var name="userEmailAddress" value="userea3@liferay.com" />
-			<var name="userScreenName" value="usersn3" />
-		</execute>
+			<execute macro="User#editPasswordCP">
+				<var name="userEmailAddress" value="${userScreenName}@liferay.com" />
+				<var name="userScreenName" value="${userScreenName}" />
+			</execute>
+		</for>
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
@@ -3890,7 +3913,7 @@
 		</execute>
 
 		<execute macro="User#logoutAndLoginPG">
-			<var name="userLoginEmailAddress" value="userea1@liferay.com" />
+			<var name="userLoginEmailAddress" value="usersn1@liferay.com" />
 			<var name="userLoginFullName" value="userfn1 userln1" />
 		</execute>
 
@@ -3904,7 +3927,7 @@
 		</execute>
 
 		<execute macro="User#logoutAndLoginPG">
-			<var name="userLoginEmailAddress" value="userea2@liferay.com" />
+			<var name="userLoginEmailAddress" value="usersn2@liferay.com" />
 			<var name="userLoginFullName" value="userfn2 userln2" />
 		</execute>
 
@@ -3918,7 +3941,7 @@
 		</execute>
 
 		<execute macro="User#logoutAndLoginPG">
-			<var name="userLoginEmailAddress" value="userea3@liferay.com" />
+			<var name="userLoginEmailAddress" value="usersn3@liferay.com" />
 			<var name="userLoginFullName" value="userfn3 userln3" />
 		</execute>
 
@@ -5234,8 +5257,6 @@
 	</command>
 
 	<command name="ViewSiteCalendarRSSFeed" priority="5">
-		<property name="portal.acceptance" value="true" />
-
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>

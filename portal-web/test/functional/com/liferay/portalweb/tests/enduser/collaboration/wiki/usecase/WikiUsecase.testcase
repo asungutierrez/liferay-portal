@@ -5,14 +5,7 @@
 	<var name="portletName" value="Wiki" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 
@@ -75,7 +68,7 @@
 			<var name="wikiPageTitle" value="Wiki Page Title" />
 		</execute>
 
-		<execute macro="WikiPage#addAttachmentViaPageDetailsPG">
+		<execute macro="WikiPage#addAttachmentViaPageEdit">
 			<var name="attachmentFileName" value="Document_1.jpg" />
 			<var name="wikiPageTitle" value="Wiki Page Title" />
 		</execute>
@@ -506,7 +499,7 @@
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute macro="WikiPage#addAttachmentViaPageDetailsPG">
+		<execute macro="WikiPage#addAttachmentViaPageEdit">
 			<var name="attachmentFileName" value="Document_1.txt" />
 			<var name="wikiPageTitle" value="FrontPage" />
 		</execute>

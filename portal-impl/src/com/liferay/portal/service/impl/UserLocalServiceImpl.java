@@ -2675,27 +2675,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	/**
 	 * Returns the user with the UUID.
 	 *
-	 * @param      uuid the user's UUID
-	 * @return     the user with the UUID
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             #getUserByUuidAndCompanyId(String, long)}
-	 */
-	@Deprecated
-	@Override
-	public User getUserByUuid(String uuid) throws PortalException {
-		List<User> users = userPersistence.findByUuid(uuid);
-
-		if (users.isEmpty()) {
-			throw new NoSuchUserException("{uuid=" + uuid + "}");
-		}
-		else {
-			return users.get(0);
-		}
-	}
-
-	/**
-	 * Returns the user with the UUID.
-	 *
 	 * @param  uuid the user's UUID
 	 * @param  companyId the primary key of the user's company
 	 * @return the user with the UUID
@@ -4758,7 +4737,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		}
 
 		try {
-			userPersistence.update(user);
+			user = userPersistence.update(user);
 		}
 		catch (ModelListenerException mle) {
 			String msg = GetterUtil.getString(mle.getCause().getMessage());
@@ -5365,10 +5344,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @deprecated As of 7.0.0, replaced by {@link #updateUser(long, String,
 	 *             String, String, boolean, String, String, String, String,
 	 *             long, String, boolean, byte[], String, String, String,
-	 *             String, String, String, String, int, int, boolean, int, int,
-	 *             int, String, String, String, String, String, String, String,
-	 *             String, String, String, String, long[], long[], long[], List,
-	 *             long[], ServiceContext)}
+	 *             String, String, String, String, long, long, boolean, int,
+	 *             int, int, String, String, String, String, String, String,
+	 *             long[], long[], long[], List, long[], ServiceContext)}
 	 */
 	@Deprecated
 	@Override
