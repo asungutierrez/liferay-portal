@@ -1,4 +1,3 @@
-
 <definition component-name="portal-Sitemap">
 	<property name="testray.main.component.name" value="Site Map" />
 
@@ -14,9 +13,7 @@
 		<execute macro="Site#addBlankCP">
 			<var name="siteName" value="QA team Site" />
 		</execute>
-
-		<for list="1,2" param="number">
-
+		
 			<execute macro="ProductMenu#gotoControlPanelSites">
 				<var name="portlet" value="Sites" />
 			</execute>
@@ -24,20 +21,20 @@
 			<execute macro="Page#add">
 				<var name="page" value="Public Pages" />
 				<var name="siteName" value="QA team Site" />
-				<var name="pageName" value="QA team Public Page ${number}" />
+				<var name="pageName" value="QA team Public Page" />
 			</execute>
-
+		
 			<execute macro="ProductMenu#gotoControlPanelSites">
 				<var name="portlet" value="Sites" />
 			</execute>
 
 			<execute macro="Page#addChild">
 				<var name="page" value="Public Pages" />
-				<var name="childPageName" value="QA Child Public Page ${number}"/>
+				<var name="childPageName" value="QA Child Public Page"/>
 				<var name="siteName" value="QA team Site" />
-				<var name="pageName" value="QA team Public Page ${number}" />
+				<var name="pageName" value="QA team Public Page" />
 			</execute>
-		</for>
+	
 	</set-up>
 
 		<tear-down>
@@ -49,110 +46,31 @@
 				<execute macro="PortalInstances#tearDownCP" />
 			</then>
 			<else>
-				<execute macro="Site#tearDownCP" />
+				<execute macro="Site#tearDownCP">
+				<var name="siteName" value="QA team Site"/>
+			</execute>
 			</else>
 		</if>
 		</tear-down>
 
 		<command name="DisplayPublicPagesWChildrenPagesasAdm">
-			
-			<execute macro="ProductMenu#gotoSite" >
-				<var name="siteName" value="QA team Site" />
+
+			<execute macro="ProductMenu#gotoSite">
+				<var name="siteName" value="QA team Site"/>
 			</execute>
-				
+
 			<execute macro="Portlet#addPG">
 				<var name="portletName" value="Site Map"/>
             </execute>
 
-			<execute macro= "Portlet#viewTitle">
+			<execute macro= "Portlet#viewSpecificPG">
 				<var name="portletName" value="Site Map"/>
 			</execute>
-
-	<for list="1,2" param="number">
-
-		<execute macro= "Portlet#viewTitle">
-				<var name="QA team Page ${number}" value="${QA team Page ${number}}"/>
-			</execute>
-
-			<execute function="AssertElementPresent" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
-
-			<if>
-			<and>
-				<condition function="IsElementPresent" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
-				<condition function="IsVisible" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
-			</and>
-			<then>
-				<execute function="Click" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
-			</then>
-		</if>
-
-			<execute macro="Portlet#viewTitle">
-				<var name="QA team Child Page ${number}" value="${QA team Child Page ${number}}"/>
-			</execute>
-				<var name="localization" value="${localization}" />
-			<execute function= "AssertElementPresent" locator1="${localization}" />
-
-			<if>
-			<and>
-				<condition function="IsElementPresent" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY" />
-				<condition function="IsVisible" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY" />
-			</and>
-			<then>
-				<execute function="Click" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY" />
-			</then>
-		</if>
-	</for>
+		
+				<execute macro= "SiteMapPortlet#viewDefaultPG">
+					<var name="pageName" value="QA team Public Page"/>
+					<var name="childPageName" value="QA Child Public Page"/>				
+				</execute>
+		
 		</command>
-
-	<command name="DisplayPrivatePagesWChildrenPagesasAdm">
-		<execute macro="Portlet#addPG">
-			<var name="portlet" value="Site Map"/>
-           </execute>
-
-		<execute macro= "Portlet#viewTitle">
-			<var name="Portlet Name" value="Site Map"/>
-		</execute>
-
-	<for list="1,2,3" param="number">
-
-		<execute macro= "Portlet#viewTitle">
-				<var name="QA team Page ${number}" value="${QA team Page ${number}}"/>
-			</execute>
-
-			<var name="pageName" value="QA team Public Page ${number}"/>
-			<execute function="AssertElementPresent" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY"/>
-
-			<if>
-			<and>
-				<condition function="IsElementPresent" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY"/>
-				<condition function="IsVisible" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY"/>
-			</and>
-			<then>
-				<execute function="Click" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY"/>
-			</then>
-			</if>
-
-			<execute function="AssertElementPresent" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" value1="${pageName}"/>
-
-			<var name="childPageName" value="QA Child Public Page ${number}"/>
-
-			<execute macro="Portlet#viewTitle">
-				<var name="QA team Child Page ${number}" value="${QA team Child Page} ${number}"/>
-			</execute>
-				<var name="localization" value="${localization}" />
-			<execute function= "AssertElementPresent" locator1="${localization}"/>
-
-			<if>
-			<and>
-				<condition function="IsElementPresent" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY"/>
-				<condition function="IsVisible" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY"/>
-			</and>
-			<then>
-				<execute function="Click" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY"/>
-			</then>
-			</if>
-
-			<execute function="AssertElementPresent" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY" value1="${childPageName}"/>
-	</for>
-	</command>
 </definition>
