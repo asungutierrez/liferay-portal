@@ -1,0 +1,164 @@
+
+<definition component-name="portal-Sitemap">
+	<property name="testray.main.component.name" value="Site Map" />
+
+	<set-up>
+		<execute macro="TestCase#setUpPortalInstance" />
+
+		<execute macro="User#firstLoginPG" />
+
+		<execute macro="ProductMenu#gotoControlPanelSites">
+			<var name="portlet" value="Sites" />
+		</execute>
+
+		<execute macro="Site#addBlankCP">
+			<var name="siteName" value="QA team Site" />
+		</execute>
+
+		<for list="1,2,3,4,5" param="number">
+
+			<execute macro="ProductMenu#gotoControlPanelSites">
+				<var name="portlet" value="Sites" />
+			</execute>
+
+			<execute macro="Page#add">
+				<var name="page" value="Public Pages" />
+				<var name="siteName" value="QA team Site" />
+				<var name="pageName" value="QA team Public Page ${number}" />
+			</execute>
+
+			<execute macro="ProductMenu#gotoControlPanelSites">
+				<var name="portlet" value="Sites" />
+			</execute>
+
+			<execute macro="Page#addChild">
+				<var name="page" value="Public Pages" />
+				<var name="childPageName" value="QA Child Public Page ${number}"/>
+				<var name="siteName" value="QA team Site" />
+				<var name="pageName" value="QA team Public Page ${number}" />
+			</execute>
+		</for>
+
+		<for list="1,2,3" param= "number">
+			<execute macro="ProductMenu#gotoControlPanelSites">
+				<var name="portlet" value="Sites" />
+			</execute>
+
+			<execute macro="Page#add">
+				<var name="page" value="Private Pages" />
+				<var name="siteName" value="QA team Site" />
+				<var name="pageName" value="QA team Private Page ${number}" />
+			</execute>
+
+			<execute macro="Page#addChild">
+				<var name="siteName" value="QA team Site" />
+				<var name="pageName" value="QA team Private Page ${number}" />
+				<var name="childPageName" value="QA Child Private Page ${number}"/>
+			</execute>
+		</for>
+	</set-up>
+
+		<tear-down>
+		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
+
+		<if>
+			<equals arg1="${testPortalInstance}" arg2="true" />
+			<then>
+				<execute macro="PortalInstances#tearDownCP" />
+			</then>
+			<else>
+				<execute macro="Site#tearDownCP" />
+			</else>
+		</if>
+		</tear-down>
+
+		<command name="DisplayPublicPagesWChildrenPagesasAdm">
+			<execute macro="Portlet#addPG">
+				<var name="portlet" value="Site Map"/>
+            </execute>
+
+			<execute macro= "Portlet#viewTitle">
+				<var name="Portlet Name" value="Site Map"/>
+			</execute>
+
+	<for list="1,2,3,4,5" param="number">
+
+		<execute macro= "Portlet#viewTitle">
+				<var name="QA team Page ${number}" value="${QA team Page ${number}}"/>
+			</execute>
+
+			<execute function="AssertElementPresent" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
+
+			<if>
+			<and>
+				<condition function="IsElementPresent" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
+				<condition function="IsVisible" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
+			</and>
+			<then>
+				<execute function="Click" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
+			</then>
+		</if>
+
+			<execute macro="Portlet#viewTitle">
+				<var name="QA team Child Page ${number}" value="${QA team Child Page ${number}}"/>
+			</execute>
+				<var name="localization" value="${localization}" />
+			<execute function= "AssertElementPresent" locator1="${localization}" />
+
+			<if>
+			<and>
+				<condition function="IsElementPresent" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY" />
+				<condition function="IsVisible" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY" />
+			</and>
+			<then>
+				<execute function="Click" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY" />
+			</then>
+		</if>
+	</for>
+		</command>
+
+		<command name="DisplayPrivatePagesWChildrenPagesasAdm">
+			<execute macro="Portlet#addPG">
+				<var name="portlet" value="Site Map"/>
+            </execute>
+
+			<execute macro= "Portlet#viewTitle">
+				<var name="Portlet Name" value="Site Map"/>
+			</execute>
+
+	<for list="1,2,3" param="number">
+
+		<execute macro= "Portlet#viewTitle">
+				<var name="QA team Page ${number}" value="${QA team Page ${number}}"/>
+			</execute>
+
+			<execute function="AssertElementPresent" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
+
+			<if>
+			<and>
+				<condition function="IsElementPresent" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
+				<condition function="IsVisible" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
+			</and>
+			<then>
+				<execute function="Click" locator1="SiteMap#SITE_MAP_PAGE_DISPLAY" />
+			</then>
+		</if>
+
+			<execute macro="Portlet#viewTitle">
+				<var name="QA team Child Page ${number}" value="${QA team Child Page} ${number}"/>
+			</execute>
+				<var name="localization" value="${localization}" />
+			<execute function= "AssertElementPresent" locator1="${localization}" />
+
+			<if>
+			<and>
+				<condition function="IsElementPresent" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY" />
+				<condition function="IsVisible" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY" />
+			</and>
+			<then>
+				<execute function="Click" locator1="SiteMap#SITE_MAP_CHILD_PAGE_DISPLAY" />
+			</then>
+		</if>
+	</for>
+		</command>
+		</definition>
