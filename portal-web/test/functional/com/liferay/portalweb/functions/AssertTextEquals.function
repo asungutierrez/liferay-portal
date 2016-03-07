@@ -2,7 +2,7 @@
 	<command name="assertCKEditorText">
 		<execute function="WaitForSPARefresh" />
 
-		<execute argument1="//a[contains(@class,'cke_button__unlink') and contains(@class,'cke_button_disabled')]" selenium="waitForVisible" />
+		<execute argument1="//a[contains(@class,'cke_button_unlink') and contains(@class,'cke_button_disabled')]" selenium="waitForVisible" />
 
 		<execute argument1="1000" selenium="pause" />
 
@@ -20,6 +20,7 @@
 	</command>
 
 	<command name="assertPartialText" summary="Assert that '${locator1}' contains the value '${value1}'">
+		
 		<execute function="WaitForSPARefresh" />
 
 		<execute selenium="waitForVisible" />

@@ -156,17 +156,17 @@
 		</execute>
 	</command>
 
-	<command name="gotoPublicSite" summary="Navigate to Product Menu > Sites > Site Popup > ${site}">
+	<command name="gotoPublicSite" summary="Navigate to Product Menu > Sites > Site Popup > ${siteName}">
 		<execute macro="ProductMenuHelper#expandPanelSites" />
 
 		<execute macro="ProductMenuHelper#openSitesPopup" />
 
-		<var name="key_site" value="${site}" />
+		<var name="key_site" value="${siteName}" />
 
-		<execute function="AssertClick" locator1="ProductMenu#PUBLIC_SITE_LINK" value1="${site}" />
+		<execute function="AssertClick" locator1="ProductMenu#PUBLIC_SITE_LINK" value1="${siteName}" />
 	</command>
 
-	<command name="gotoSite" summary="Navigate to Product Menu > Sites > Sites Modal > ${site}">
+	<command name="gotoSite" summary="Navigate to Product Menu > Sites > Sites Modal > ${siteName}">
 		<execute macro="ProductMenuHelper#expandPanelSites" />
 
 		<execute macro="ProductMenuHelper#openSitesPopup" />
@@ -182,7 +182,7 @@
 		</execute>
 
 		<execute macro="ProductMenuHelper#gotoSite">
-			<var name="site" value="${site}" />
+			<var name="site" value="${siteName}" />
 		</execute>
 
 		<execute function="SelectFrameTop" />

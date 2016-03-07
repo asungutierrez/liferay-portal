@@ -50,7 +50,7 @@
 </tr>
 <tr>
 	<td>BASIC_SEARCH_FIELD</td>
-	<td>//div[contains(@class,'navbar-default')]//input[contains(@id,'keywords')]</td>
+	<td>//*[@data-qa-id='searchInput']|//div[contains(@class,'navbar-default')]//input[contains(@id,'keywords')]</td>
 	<td></td>
 </tr>
 <tr>
